@@ -75,7 +75,17 @@ Set the URl for the hook on `config.php` file.
 $hook_url = 'https://your_path/hook.php';
 ```
 
-## 6. Modifying DB Queries
+## 6. Register the Webhook
+
+To activate the bot and to be able to recieve messages from telegram you need to register the bot.
+
+just go to the link `https://YOURLINK.com/set.php` and all done the bot is registered.
+
+To unregister the bot "it will no longer recieve updates from telegram you can visit the link `https://YOURLINK/unset.php`
+
+**THE LINKS SHOULD NOT BE PUBLICLY ACCESSABLE**
+
+## 7. Modifying DB Queries
 
 All Business logic related queries can be found on `Commands/LibyanTrader.php` class.
 
@@ -83,7 +93,7 @@ it's has the inline comments describes the inputs and the outputs needed.
 
 **DO NOT CHANGE OTHER FILES UNDRE `Commands` FOLDER**
 
-## 7. Queries
+## 8. Queries
 
 * login
 * Logout
@@ -135,6 +145,6 @@ send message to multiple users
 #### sendMessageToMany
 send message to multiple users
 
-## 8. Sending Messages
+## 9. Sending Messages Out of Commands Context
 
 You can check the file `test.php` to see how to send message to particular user using `$chat_id`.

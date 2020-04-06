@@ -75,6 +75,7 @@ class LibyanTrader {
         $message     = $handler->getMessage();
         $chat_id     = $message->getChat()->getId();
         $user_id = $message->getFrom()->getId();
+        return -1;
     
         $pdo = DB::getPdo();
         $stmt = $pdo->prepare('
