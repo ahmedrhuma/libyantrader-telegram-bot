@@ -56,10 +56,11 @@ class StartCommand extends SystemCommand
         $message = $this->getMessage();
 
         $chat_id = $message->getChat()->getId();
-        $text    = 'Hi there!' . PHP_EOL . 'Type /help to see all commands!';
+        $text    = '*مَـرحبا بكـ فـي المساعد الشخصي لشركة المٌـتداول الـليبي*' . PHP_EOL . 'يُـمكنني مُـساعدتك فـي معرفة رصيد حسابك، إجراء المعاملات مثل طلب السحب، التحقق من آخر عمليات الإيداع والسحب، التحقق من الأرباح، والمزيد من الإجراءات السريعة يمكنك طلبها مباشرة مـن هُـنا.'. PHP_EOL. 'يُـرجى كـتابة الأمر /help لإظهـار جـميع الأوامر المستخدمة.';
 
         $data = [
             'chat_id' => $chat_id,
+            'parse_mode' => 'markdown',
             'text'    => $text,
         ];
 

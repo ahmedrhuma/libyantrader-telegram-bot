@@ -1,12 +1,5 @@
-# PHP Telegram Bot Example
-An A-Z example of Telegram bot using the [PHP Telegram Bot][1] library.
-
-This repository aims to demonstrate the usage of all the features offered by the PHP Telegram Bot library and as such contains all example commands.
-Also, it gives an example setup for both the standard usage and using the [PHP Telegram Bot Manager][3] 
-
-**:exclamation: Important!**
-- Most of the commands found here are **not to be used exactly as they are**, they are mere demonstrations of features! They are provided as-is and any **extra security measures need to be added by you**, the developer.
-- Before getting started with this project, make sure you have read the official [readme][2] to understand how the PHP Telegram Bot library works and what is required to run a Telegram bot.
+# Libyan Trader Telegram Bot
+Follow the instuctions on how to install and integrate the backend bot to your current system.
 
 Let's get started then! :smiley:
 
@@ -15,61 +8,131 @@ Let's get started then! :smiley:
 To start off, you can clone this repository using git:
 
 ```bash
-$ git clone https://github.com/php-telegram-bot/example-bot.git
+$ git clone https://github.com/ahmedrhuma/libyantrader-telegram-bot.git
 ```
 
-or better yet, download it as a zip file:
+## 1. Download dependencies
 
-```bash
-$ curl -o example-bot.zip https://github.com/php-telegram-bot/example-bot/archive/master.zip
-```
+We use `composer`, you can download the dependencies using it.
 
-Unzip the files to the root of your project folder.
-
-## 1. Making it yours
-
-Now you can choose what installation you would like, either the default one or using the [Bot Manager][3] project.
-Depending on which one you choose, you can delete the files that are not required.
+`composer.phar install`
 
 ---
 
-**Default**
-Next, edit the following files, replacing all necessary values with those of your project.
-Thanks to reading the main readme file, you should know what these do.
+**Structure**
+This is the files structure, and what each file contains.
 
-- `composer.json` (Describes your project and it's dependencies)
+- `composer.json` (Describes the project and it's dependencies)
 - `set.php` (Used to set the webhook)
 - `unset.php` (Used to unset the webhook)
 - `hook.php` (Used for the webhook method)
-- `getUpdatesCLI.php` (Used for the getUpdates method)
-- `cron.php` (Used to execute commands via cron)
+- `Commands` (used to held all the commands under the hood work)
 
-**Bot Manager**
-Using the bot manager makes life much easier, as all configuration goes into a single file, `manager.php`.
+## 2. MySQL storage
 
-If you decide to use the Bot Manager, be sure to [read all about it][4] and change the `require` block in the `composer.json` file:
-```json
-"require": {
-    "php-telegram-bot/telegram-bot-manager": "*"
-}
+create a new database (utf8mb4_unicode_520_ci), import structure.sql.
+
+**Edit the database connection on `hook.php` file**
+
+```php
+$mysql_credentials = [
+   'host'     => 'localhost',
+   'user'     => 'root',
+   'password' => '',
+   'database' => 'telegram',
+];
 ```
 
-Then, edit the following files, replacing all necessary values with those of your project.
+## 3. Bot Authentication
 
-- `composer.json` (Describes your project and it's dependencies)
-- `manager.php` (Used as the main entry point for everything)
+Change the authentication token and bot name on `hook.php` file **AND** on `set.php` file.
 
----
-
-Now you can install all dependencies using [composer][5]:
-```bash
-$ composer install
+```php
+$bot_api_key  = 'TOKEN_HERE';
+$bot_username = 'BOT_NAME';
 ```
 
-## To be continued!
+## 4. Setting admin user
 
-[1]: https://github.com/php-telegram-bot/core "php-telegram-bot/core"
-[2]: https://github.com/php-telegram-bot/core#readme "PHP Telegram Bot - README"
-[3]: https://github.com/php-telegram-bot/telegram-bot-manager "php-telegram-bot/telegram-bot-manager"
-[4]: https://github.com/php-telegram-bot/telegram-bot-manager#readme "PHP Telegram Bot Manager - README"
-[5]: https://getcomposer.org/ "Composer"
+After getting the telegram user ID, you can set some users as admins, so they can run admin commands, set the user admins ID on `hook.php`
+
+```php
+$admin_users = [
+    ID_HERE,
+    ID_TWO
+    ...etc
+]
+```
+
+
+## 5. Set hook URL
+
+Set the URl for the hook on `set.php` file.
+
+```php
+$hook_url = 'https://your_path/hook.php';
+```
+
+## 6. Modifying DB Queries
+
+All Business logic related queries can be found on `Commands/LibyanTrader.php` class.
+
+it's has the inline comments describes the inputs and the outputs needed.
+
+**DO NOT CHANGE OTHER FILES UNDRE `Commands` FOLDER**
+
+## 7. Queries
+
+* login
+* Logout
+* AuthorizedData
+* transferToAccount
+* withdrawalRequest
+* getSummary
+* getResult
+* contact
+* sendMessageWithPhoto
+* sendMessageWithPictureToMany
+* sendMessage
+* sendMessageToMany
+
+#### Login
+
+Performs login request, the unique user ID's are `$user_id` and `$telegram_id`
+
+#### Logout
+performs logout request, must clear the data
+
+#### AuthorizedData
+Checks if the user is already authenticated or not, by checking the telegram `$user_id` and `$chat_id` if they exists.
+
+#### TransferToAccount
+Performs internal transfer request
+
+#### WithdrawalRequest
+Performs withdrawal request
+
+#### getSummary
+Get account summary, current balance and holder name.
+
+#### getResult
+Get the last performance result.
+
+#### contact
+Contact us form result
+
+#### sendMessageWithPhoto
+Send Message with picture to specific user 
+
+#### sendMessage
+Send message to specific user
+
+#### sendMessageWithPictureToMany
+send message to multiple users
+
+#### sendMessageToMany
+send message to multiple users
+
+## 8. Sending Messages
+
+You can check the file `test.php` to see how to send message to particular user using `$chat_id`.

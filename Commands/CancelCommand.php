@@ -32,7 +32,7 @@ class CancelCommand extends UserCommand
     /**
      * @var string
      */
-    protected $description = 'Cancel the currently active conversation';
+    protected $description = 'إلـغاء العملية الجـارية حاليا تحت أمر معـين';
 
     /**
      * @var string
@@ -42,7 +42,7 @@ class CancelCommand extends UserCommand
     /**
      * @var string
      */
-    protected $version = '0.2.1';
+    protected $version = '1.0.0';
 
     /**
      * @var bool
@@ -57,7 +57,7 @@ class CancelCommand extends UserCommand
      */
     public function execute()
     {
-        $text = 'No active conversation!';
+        $text = 'لا يُـوجد أمـر قـيد التنفيذ لإلغاءه، يمكنك فقط إلغـاء أمر في خلال خطوات تنفيذه.';
 
         //Cancel current conversation if any
         $conversation = new Conversation(
@@ -67,7 +67,7 @@ class CancelCommand extends UserCommand
 
         if ($conversation_command = $conversation->getCommand()) {
             $conversation->cancel();
-            $text = 'Conversation "' . $conversation_command . '" cancelled!';
+            $text = 'المُـحادثة تحت الأمر "' . $conversation_command . '" تم إلغاؤها!';
         }
 
         return $this->removeKeyboard($text);
@@ -98,6 +98,6 @@ class CancelCommand extends UserCommand
      */
     public function executeNoDb()
     {
-        return $this->removeKeyboard('Nothing to cancel.');
+        return $this->removeKeyboard('لا يوجد شـيء لإلغاءه');
     }
 }

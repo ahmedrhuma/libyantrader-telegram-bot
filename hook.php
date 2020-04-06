@@ -10,28 +10,12 @@
 
 // Load composer
 require_once __DIR__ . '/vendor/autoload.php';
-
-// Add you bot's API key and name
-$bot_api_key  = 'your:bot_api_key';
-$bot_username = 'username_bot';
-
-// Define all IDs of admin users in this array (leave as empty array if not used)
-$admin_users = [
-//    123,
-];
+require_once 'config.php';
 
 // Define all paths for your custom commands in this array (leave as empty array if not used)
 $commands_paths = [
     __DIR__ . '/Commands/',
 ];
-
-// Enter your MySQL database credentials
-//$mysql_credentials = [
-//    'host'     => 'localhost',
-//    'user'     => 'dbuser',
-//    'password' => 'dbpass',
-//    'database' => 'dbname',
-//];
 
 try {
     // Create Telegram API object
@@ -44,7 +28,7 @@ try {
     $telegram->enableAdmins($admin_users);
 
     // Enable MySQL
-    //$telegram->enableMySql($mysql_credentials);
+    $telegram->enableMySql($mysql_credentials);
 
     // Logging (Error, Debug and Raw Updates)
     // https://github.com/php-telegram-bot/core/blob/master/doc/01-utils.md#logging

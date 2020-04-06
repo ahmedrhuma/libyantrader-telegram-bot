@@ -13,6 +13,10 @@ namespace Longman\TelegramBot\Commands\UserCommands;
 use Longman\TelegramBot\Commands\Command;
 use Longman\TelegramBot\Commands\UserCommand;
 use Longman\TelegramBot\Request;
+use Longman\TelegramBot\DB;
+use Huemix\LibyanTrader;
+use PDO;
+
 
 /**
  * User "/help" command
@@ -29,17 +33,17 @@ class HelpCommand extends UserCommand
     /**
      * @var string
      */
-    protected $description = 'Show bot commands help';
+    protected $description = 'مُـشاهدة قَـائِـمة المُـساعدة، حيث يمكنك معرفة الأوامر المُـستخدمة وطريقة إستخدامها';
 
     /**
      * @var string
      */
-    protected $usage = '/help or /help <command>';
+    protected $usage = '/help أو /help <command>';
 
     /**
      * @var string
      */
-    protected $version = '1.3.0';
+    protected $version = '1.0.0';
 
     /**
      * @inheritdoc
@@ -48,6 +52,7 @@ class HelpCommand extends UserCommand
     {
         $message     = $this->getMessage();
         $chat_id     = $message->getChat()->getId();
+        $user_id = $message->getFrom()->getId();
         $command_str = trim($message->getText(true));
 
         // Admin commands shouldn't be shown in group chats
@@ -58,23 +63,35 @@ class HelpCommand extends UserCommand
             'parse_mode' => 'markdown',
         ];
 
+        /**
+         * FAKE DATABASE CHECK
+         */
+        
+        // IF NOT LOGGED IN
+        if (LibyanTrader::AuthorizedData($this) === false) {
+            // CHECK IF USER IS NOT LOGGED IN AND SHOW MINIMAL HELP
+            $data['text'] = 'يَـجب عَـليك أولا تسجيل الدخول إلى حِـسابك بإستخدام الأمر /login' . PHP_EOL .
+                'ثـم إتباع الخطوات لربط حساب المستثمر الخاص بك بالتيليقرام، ثم يمكنك مشاهدة كـافة الأوامر المستخدمة.';
+            return Request::sendMessage($data);
+        }
+
         list($all_commands, $user_commands, $admin_commands) = $this->getUserAdminCommands();
 
         // If no command parameter is passed, show the list.
         if ($command_str === '') {
-            $data['text'] = '*Commands List*:' . PHP_EOL;
+            $data['text'] = '';
+            $data['text'] .= '*قَـائِـمة الأوامِـر التـي يمكنك إستخدامها فـي النظام التِـلقـائي لشركة المُتداول اللـيبي*:' . PHP_EOL . PHP_EOL;
+            $data['text'] .= '*طَـريقة الإستخدام*' .PHP_EOL . PHP_EOL;
+            $data['text'] .= '[] - قُـم بكـتـابة الشرطة المائلة إلى الخلف `\` لتظهر لك قـائمة بكافة الأوامر.' .PHP_EOL;
+            $data['text'] .= '[] - يُـمكنك كتابة الأمر كـاملا، أو الضغط على الأمر مـباشرة مِـن القـائمة.' . PHP_EOL;
+            $data['text'] .= '[] - يُـمكنك الضـغط عـلى الأمر مبـاشرة من الرسـائل المرسلة مِـني، ستجد الأوامر مظللة بلـون مختلف عن بقية النص، يمكنك الضغط عليها مباشرة للإستمرار.'. PHP_EOL .PHP_EOL;
+            $data['text'] .= '*الأوامِـر*'.PHP_EOL;
             foreach ($user_commands as $user_command) {
-                $data['text'] .= '/' . $user_command->getName() . ' - ' . $user_command->getDescription() . PHP_EOL;
+                if ($user_command->getName() !== 'login')
+                    $data['text'] .= '/' . $user_command->getName() . ' - ' . $user_command->getDescription() . PHP_EOL;
             }
 
-            if ($safe_to_show && count($admin_commands) > 0) {
-                $data['text'] .= PHP_EOL . '*Admin Commands List*:' . PHP_EOL;
-                foreach ($admin_commands as $admin_command) {
-                    $data['text'] .= '/' . $admin_command->getName() . ' - ' . $admin_command->getDescription() . PHP_EOL;
-                }
-            }
-
-            $data['text'] .= PHP_EOL . 'For exact command help type: /help <command>';
+            $data['text'] .= PHP_EOL . 'لمشاهدة طَـريقة إستخدام أحد الأوامر يُـرجى كِـتابة /help <الأمر>'. PHP_EOL . 'مِـثال:' . PHP_EOL . '/help summary';
 
             return Request::sendMessage($data);
         }
@@ -83,11 +100,10 @@ class HelpCommand extends UserCommand
         if (isset($all_commands[$command_str]) && ($safe_to_show || !$all_commands[$command_str]->isAdminCommand())) {
             $command      = $all_commands[$command_str];
             $data['text'] = sprintf(
-                'Command: %s (v%s)' . PHP_EOL .
-                'Description: %s' . PHP_EOL .
-                'Usage: %s',
+                'الأمر: %s' . PHP_EOL .
+                'الوصـف: %s' . PHP_EOL .
+                'الإستخدام: %s',
                 $command->getName(),
-                $command->getVersion(),
                 $command->getDescription(),
                 $command->getUsage()
             );
@@ -95,7 +111,7 @@ class HelpCommand extends UserCommand
             return Request::sendMessage($data);
         }
 
-        $data['text'] = 'No help available: Command /' . $command_str . ' not found';
+        $data['text'] = 'لا يوجد مساعدة متوفرة: الأمر /'. $command_str. ' غير متوفر';
 
         return Request::sendMessage($data);
     }

@@ -1,22 +1,23 @@
 {
-    "name": "telegram-bot/example-bot",
+    "name": "libyantrader/telegrambot",
     "type": "project",
-    "description": "PHP Telegram Bot Example",
-    "keywords": ["telegram", "bot", "example"],
+    "description": "LibyaTrader Telegram Bot",
+    "keywords": ["telegram", "bot", "libyantrader"],
     "license": "MIT",
-    "homepage": "https://github.com/php-telegram-bot/example-bot",
-    "support": {
-        "issues": "https://github.com/php-telegram-bot/example-bot/issues",
-        "source": "https://github.com/php-telegram-bot/example-bot"
-    },
+    "homepage": "https://github.com/ahmedrhuma/libyantrader-telegram-bot",
     "authors": [
         {
-            "name": "PHP Telegram Bot Team",
-            "homepage": "https://github.com/php-telegram-bot/example-bot/graphs/contributors",
+            "name": "Ahmed Rhuma",
+            "homepage": "http://rhuma.net",
             "role": "Developer"
         }
     ],
     "require": {
         "longman/telegram-bot": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Huemix\\": "Commands//"
+        }
     }
 }
