@@ -1,12 +1,4 @@
 <?php
-/**
- * This file is part of the TelegramBot package.
- *
- * (c) Avtandil Kikabidze aka LONGMAN <akalongman@gmail.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
 
 namespace Longman\TelegramBot\Commands\UserCommands;
 
@@ -62,10 +54,6 @@ class HelpCommand extends UserCommand
             'chat_id'    => $chat_id,
             'parse_mode' => 'markdown',
         ];
-
-        /**
-         * FAKE DATABASE CHECK
-         */
         
         // IF NOT LOGGED IN
         $AuthorizedData = LibyanTrader::AuthorizedData($this);

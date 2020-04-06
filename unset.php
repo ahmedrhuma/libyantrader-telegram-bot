@@ -2,7 +2,6 @@
 /**
  * README
  * This file is intended to unset the webhook.
- * Uncommented parameters must be filled
  */
 
 // Load composer
