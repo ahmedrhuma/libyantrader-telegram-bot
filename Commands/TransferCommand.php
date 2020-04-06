@@ -77,24 +77,20 @@ class TransferCommand extends UserCommand
         $chat_id = $chat->getId();
         $user_id = $user->getId();
 
-        $AuthorizedUser = LibyanTrader::AuthorizedData($this);
-
-        // if not authorized
-        if ($AuthorizedUser === false) return $this->getTelegram()->executeCommand('help');
-        else if ($AuthorizedUser === -1) {
-            $data['text'] = LibyanTrader::$CLOSED;
-            return Request::sendMessage($data);
-        }
-
-        // $data = ['chat_id' => '968814487'];
-        // $data['caption'] = 'ممكن تنزل الارباح اوتوماتيك في كل شهر هكي، هذه الرسالة جاية لغادة اوتوماتيك من البوت، تقدر تبعت لكل البشر عادي ';
-        // $data['photo']   = Request::encodeFile('announcement.jpg');
-        // return Request::sendPhoto($data);
-
+        
         //Preparing Response
         $data = [
             'chat_id' => $chat_id,
         ];
+        
+        $AuthorizedUser = LibyanTrader::AuthorizedData($this);
+        // if not authorized
+        if ($AuthorizedUser === false) return $this->getTelegram()->executeCommand('help');
+        else if ($AuthorizedUser === -1) {
+            $data['text'] = LibyanTrader::$CLOSED;
+            $data['parse_mode'] = 'MARKDOWN';
+            return Request::sendMessage($data);
+        }
 
         if ($chat->isGroupChat() || $chat->isSuperGroup()) {
             //reply to message id is applied by default

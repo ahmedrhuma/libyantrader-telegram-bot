@@ -74,6 +74,7 @@ class SummaryCommand extends UserCommand
         if ($AuthorizedUser === false) return $this->getTelegram()->executeCommand('help');
         else if ($AuthorizedUser === -1) {
             $data['text'] = LibyanTrader::$CLOSED;
+            $data['parse_mode'] = 'MARKDOWN';
             return Request::sendMessage($data);
         }
 

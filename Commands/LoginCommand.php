@@ -95,6 +95,7 @@ class LoginCommand extends UserCommand
 
         if ($AuthorizedData === -1) {
             $data['text'] = LibyanTrader::$CLOSED;
+            $data['parse_mode'] = 'MARKDOWN';
             return Request::sendMessage($data);
         }
 

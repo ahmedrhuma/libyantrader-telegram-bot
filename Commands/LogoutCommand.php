@@ -70,6 +70,7 @@ class LogoutCommand extends UserCommand
 
         if (LibyanTrader::AuthorizedData($this) === -1) {
             $data['text'] = LibyanTrader::$CLOSED;
+            $data['parse_mode'] = 'MARKDOWN';
             return Request::sendMessage($data);
         }
 

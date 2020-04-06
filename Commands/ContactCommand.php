@@ -87,18 +87,19 @@ class ContactCommand extends UserCommand
         $chat_id = $chat->getId();
         $user_id = $user->getId();
 
+        //Preparing Response
+        $data = [
+            'chat_id' => $chat_id,
+        ];
+        
         $AuthorizedUser = LibyanTrader::AuthorizedData($this);
         // if not logged in SHOW HELP
         if ($AuthorizedUser === false) return $this->getTelegram()->executeCommand('help');
         else if ($AuthorizedUser === -1) {
             $data['text'] = LibyanTrader::$CLOSED;
+            $data['parse_mode'] = 'MARKDOWN';
             return Request::sendMessage($data);
         }
-
-        //Preparing Response
-        $data = [
-            'chat_id' => $chat_id,
-        ];
 
         if ($chat->isGroupChat() || $chat->isSuperGroup()) {
             //reply to message id is applied by default
