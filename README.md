@@ -26,13 +26,15 @@ This is the files structure, and what each file contains.
 - `set.php` (Used to set the webhook)
 - `unset.php` (Used to unset the webhook)
 - `hook.php` (Used for the webhook method)
+- `config.php` (used to held the config params)
+- `test.php` (Showcase on how to use the API out of commands context)
 - `Commands` (used to held all the commands under the hood work)
 
 ## 2. MySQL storage
 
 create a new database (utf8mb4_unicode_520_ci), import structure.sql.
 
-**Edit the database connection on `hook.php` file**
+**Edit the database connection on `config.php` file**
 
 ```php
 $mysql_credentials = [
@@ -45,7 +47,7 @@ $mysql_credentials = [
 
 ## 3. Bot Authentication
 
-Change the authentication token and bot name on `hook.php` file **AND** on `set.php` file.
+Change the authentication token and bot name on `config.php` file.
 
 ```php
 $bot_api_key  = 'TOKEN_HERE';
@@ -54,7 +56,7 @@ $bot_username = 'BOT_NAME';
 
 ## 4. Setting admin user
 
-After getting the telegram user ID, you can set some users as admins, so they can run admin commands, set the user admins ID on `hook.php`
+After getting the telegram user ID, you can set some users as admins, so they can run admin commands, set the user admins ID on `config.php`
 
 ```php
 $admin_users = [
@@ -67,7 +69,7 @@ $admin_users = [
 
 ## 5. Set hook URL
 
-Set the URl for the hook on `set.php` file.
+Set the URl for the hook on `config.php` file.
 
 ```php
 $hook_url = 'https://your_path/hook.php';
