@@ -9,6 +9,10 @@ class LibyanTrader {
     static $ERROR_TEXT = '*حَـدث خطـأ أثـناء إنشـاء الطلب*' . PHP_EOL
     . 'الرَجـاء المحاولة مرة أخـرى لاحقا، أو الإتصال بنـا عـن طَـريق /contact للتبليغ عن المشكلة.';
 
+    static $CLOSED = '*المَـوقع مغلق للصـيانة*' . PHP_EOL . PHP_EOL
+    . 'يـتم إجراء تـحديثات عـلى النِـظام، ولا يمكنك إجراء أي عملية في الوقت الحالي، سيـتم إعلامكم فـور الإنتهاء من عملية التـحديث.' . PHP_EOL . PHP_EOL .
+    '*شُـكرا لـكونك أحد مُـستثمري شركة المُـتداول الـليبي*';
+
     /**
      * DO Login
      * @param user ['email', 'account', 'password']
@@ -65,12 +69,12 @@ class LibyanTrader {
     /**
      * @return userData on success
      * @return false on error
+     * @return -1 if closed
      */
     static function AuthorizedData($handler) {
         $message     = $handler->getMessage();
         $chat_id     = $message->getChat()->getId();
         $user_id = $message->getFrom()->getId();
-
     
         $pdo = DB::getPdo();
         $stmt = $pdo->prepare('

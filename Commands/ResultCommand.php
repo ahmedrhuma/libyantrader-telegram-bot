@@ -72,7 +72,11 @@ class ResultCommand extends UserCommand
 
         // if not logged in SHOW HELP
         if ($AuthorizedUser === false) return $this->getTelegram()->executeCommand('help');
-
+        else if ($AuthorizedUser === -1) {
+            $data['text'] = LibyanTrader::$CLOSED;
+            return Request::sendMessage($data);
+        }
+        
         //Send chat action
         Request::sendChatAction([
             'chat_id' => $chat_id,

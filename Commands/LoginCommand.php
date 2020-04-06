@@ -91,6 +91,13 @@ class LoginCommand extends UserCommand
             'chat_id' => $chat_id,
         ];
 
+        $AuthorizedData = LibyanTrader::AuthorizedData($this);
+
+        if ($AuthorizedData === -1) {
+            $data['text'] = LibyanTrader::$CLOSED;
+            return Request::sendMessage($data);
+        }
+
         if ($chat->isGroupChat() || $chat->isSuperGroup()) {
             //reply to message id is applied by default
             //Force reply is applied by default so it can work with privacy on

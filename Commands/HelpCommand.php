@@ -68,10 +68,15 @@ class HelpCommand extends UserCommand
          */
         
         // IF NOT LOGGED IN
-        if (LibyanTrader::AuthorizedData($this) === false) {
+        $AuthorizedData = LibyanTrader::AuthorizedData($this);
+        if ($AuthorizedData === false) {
             // CHECK IF USER IS NOT LOGGED IN AND SHOW MINIMAL HELP
             $data['text'] = 'يَـجب عَـليك أولا تسجيل الدخول إلى حِـسابك بإستخدام الأمر /login' . PHP_EOL .
                 'ثـم إتباع الخطوات لربط حساب المستثمر الخاص بك بالتيليقرام، ثم يمكنك مشاهدة كـافة الأوامر المستخدمة.';
+            return Request::sendMessage($data);
+        }
+        else if ($AuthorizedData === -1) {
+            $data['text'] = LibyanTrader::$CLOSED;
             return Request::sendMessage($data);
         }
 

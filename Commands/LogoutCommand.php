@@ -68,6 +68,11 @@ class LogoutCommand extends UserCommand
             'reply_to_message_id' => $message_id,
         ];
 
+        if (LibyanTrader::AuthorizedData($this) === -1) {
+            $data['text'] = LibyanTrader::$CLOSED;
+            return Request::sendMessage($data);
+        }
+
         $AuthorizedUser = LibyanTrader::Logout($this);
 
         $data['text'] = '*شُـكرا لـكونك أحد عُـملاء شـركة المتداول الـليبي*';

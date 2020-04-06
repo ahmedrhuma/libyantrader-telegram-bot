@@ -88,9 +88,12 @@ class ContactCommand extends UserCommand
         $user_id = $user->getId();
 
         $AuthorizedUser = LibyanTrader::AuthorizedData($this);
-
         // if not logged in SHOW HELP
-        // if ($AuthorizedUser === false) return $this->getTelegram()->executeCommand('help');
+        if ($AuthorizedUser === false) return $this->getTelegram()->executeCommand('help');
+        else if ($AuthorizedUser === -1) {
+            $data['text'] = LibyanTrader::$CLOSED;
+            return Request::sendMessage($data);
+        }
 
         //Preparing Response
         $data = [

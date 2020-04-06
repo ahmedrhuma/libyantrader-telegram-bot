@@ -80,8 +80,10 @@ class TransferCommand extends UserCommand
         $AuthorizedUser = LibyanTrader::AuthorizedData($this);
 
         // if not authorized
-        if ($AuthorizedUser === false) {
-            return $this->getTelegram()->executeCommand('help');
+        if ($AuthorizedUser === false) return $this->getTelegram()->executeCommand('help');
+        else if ($AuthorizedUser === -1) {
+            $data['text'] = LibyanTrader::$CLOSED;
+            return Request::sendMessage($data);
         }
 
         // $data = ['chat_id' => '968814487'];
